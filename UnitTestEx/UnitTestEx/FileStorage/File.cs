@@ -22,7 +22,7 @@ namespace UnitTestEx
         {
             this.filename = filename;
             this.content = content;
-            this.size = content.Length / 2;
+            this.size = content.Length / 2.0;
             this.extension = filename.Split('.')[filename.Split('.').Length - 1];
         }
 
@@ -32,7 +32,7 @@ namespace UnitTestEx
          */
         public double GetSize()
         {
-            return (int)size;
+            return size;
         }
 
         /**

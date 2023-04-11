@@ -8,22 +8,24 @@ namespace UnitTestEx
     public class FileStorage
     {
         private List<File> files = new List<File>();
-        private double availableSize = 100;
-        private double maxSize = 100;
+        private double availableSize = 100; //Свободное место
+        private double maxSize = 100; //Размер хранилища
 
         /**
          * Construct object and set max storage size and available size according passed values
          * @param size FileStorage size
          */
-        public FileStorage(int size) {
+        public FileStorage(int size)
+        {
             maxSize = size;
-            availableSize += maxSize;
+            availableSize = size;
         }
 
         /**
          * Construct object and set max storage size and available size based on default value=100
          */
-        public FileStorage() {
+        public FileStorage()
+        {
         }
 
 
@@ -33,21 +35,25 @@ namespace UnitTestEx
          * @return result of file saving
          * @throws FileNameAlreadyExistsException in case of already existent filename
          */
-        public bool Write(File file) {
+        public bool Write(File file)
+        {
             // Проверка существования файла
-            if (IsExists(file.GetFilename())) {
+            if (IsExists(file.GetFilename()))
+            {
                 //Если файл уже есть, то кидаем ошибку
                 throw new FileNameAlreadyExistsException();
             }
 
             //Проверка того, размер файла не привышает доступный объем памяти
-            if (file.GetSize() >= availableSize) {
-                return false;
+            if (file.GetSize() > availableSize)
+            {
+                //Если размер файла превышате доступный объём памяти, то кидаем ошибку
+                throw new FileIsToBigException();
             }
 
             // Добалвяем файл в лист
             files.Add(file);
-            // Добалвяем файл в лист
+            // Вычитаем размер файла из доступного места
             availableSize -= file.GetSize();
 
             return true;
@@ -58,11 +64,14 @@ namespace UnitTestEx
          * @param fileName to search
          * @return result of checking
          */
-        public bool IsExists(String fileName) {
+        public bool IsExists(String fileName)
+        {
             // Для каждого элемента с типом File из Листа files
-            foreach (File file in files) {
+            foreach (File file in files)
+            {
                 // Проверка имени
-                if (file.GetFilename().Contains(fileName)) {
+                if (file.GetFilename().Contains(fileName))
+                {
                     return true;
                 }
             }
@@ -75,14 +84,22 @@ namespace UnitTestEx
          * @return result of file deleting
          */
         public bool Delete(String fileName) {
-            return files.Remove(GetFile(fileName));
+            if (IsExists(fileName))
+            {
+                File file = GetFile(fileName);
+                availableSize += file.GetSize();
+                return true;
+
+            }
+            else return false;
         }
 
         /**
          * Get all Files saved in the storage
          * @return list of files
          */
-        public List<File> GetFiles() {
+        public List<File> GetFiles()
+        {
             return files;
         }
 
@@ -108,7 +125,8 @@ namespace UnitTestEx
          */
         public bool DeleteAllFiles()
         {
-            files.RemoveRange(0, files.Count - 1);
+            files.RemoveRange(0, files.Count);
+            availableSize = maxSize;
             return files.Count == 0;
         }
 

@@ -39,14 +39,12 @@ namespace UnitTestProject
         static object[] NewFilesData =
             {
             new object[] { new File(REPEATED_STRING, CONTENT_STRING) },
-            //new object[] { new File(SPACE_STRING, WRONG_SIZE_CONTENT_STRING) },
             new object[] { new File(FILE_PATH_STRING, CONTENT_STRING) }
         };
 
         static object[] FilesForDeleteData =
         {
             new object[] { new File(REPEATED_STRING, CONTENT_STRING), REPEATED_STRING },
-            //new object[] { null, TIC_TOC_TOE_STRING }
         };
 
         static object[] NewExceptionFileData = {
@@ -58,10 +56,6 @@ namespace UnitTestProject
         public void WriteTest(File file)
         {
             Assert.True(storage.Write(file));
-            //catch(FileIsToBigExeption)
-            //{
-            //    Assert.Pass();
-            //}
         }
 
         /* Тестирование записи файла превышающего размер хранилища */

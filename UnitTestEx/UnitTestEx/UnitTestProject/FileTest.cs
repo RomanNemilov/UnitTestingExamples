@@ -20,7 +20,7 @@ namespace UnitTestProject
         static object[] FilesData =
         {
             new object[] {new File(FILE_PATH_STRING, CONTENT_STRING), FILE_PATH_STRING, CONTENT_STRING},
-            new object[] {new File(SPACE_STRING, SPACE_STRING), SPACE_STRING, SPACE_STRING}
+            new object[] { new File(SPACE_STRING, SPACE_STRING), SPACE_STRING, SPACE_STRING}
         };
 
         /* Тестируем получение размера */
